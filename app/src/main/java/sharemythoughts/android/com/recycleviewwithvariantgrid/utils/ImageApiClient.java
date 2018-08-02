@@ -46,7 +46,7 @@ public class ImageApiClient {
 
     }
 
-    public void dispose() {
+    public static void dispose() {
         instance = null;
     }
 }

@@ -9,6 +9,6 @@ import sharemythoughts.android.com.recycleviewwithvariantgrid.model.JsonResponse
  */
 
 public interface ImageApi {
-    @GET("BeautifulBangladesh/blob/master/beautiful_bangladesh.json")
+    @GET("BeautifulBangladesh/master/beautiful_bangladesh.json")
     Observable<JsonResponse> getImageList();
 }

@@ -3,6 +3,7 @@ package sharemythoughts.android.com.recycleviewwithvariantgrid.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,13 +13,13 @@ import java.util.List;
 public class JsonResponse {
     @SerializedName("images")
     @Expose
-    private List<ImageInfo> imageList;
+    private ArrayList<ImageInfo> imageList;
 
-    public void setImageList(List<ImageInfo> imageList) {
+    public void setImageList(ArrayList<ImageInfo> imageList) {
         this.imageList = imageList;
     }
 
-    public List<ImageInfo> getImageList() {
+    public ArrayList<ImageInfo> getImageList() {
         return imageList;
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class RecycleViewBaseActivity extends AppCompatActivity implements ImageL
 
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
-        GridLayoutManager layoutManager = new CustomGridLayoutManager(this,2, LinearLayoutManager.VERTICAL,  false);
+        final GridLayoutManager layoutManager = new CustomGridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ImageAdapter(this);
         recyclerView.setAdapter(adapter);
@@ -48,6 +49,22 @@ public class RecycleViewBaseActivity extends AppCompatActivity implements ImageL
                         return 1;
                     default:
                         return 1;
+                }
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (layoutManager.findFirstVisibleItemPosition() == 0) {
+                    View view = layoutManager.findViewByPosition(0);
+                    view.setTranslationY(-view.getTop() / 2);
                 }
             }
         });

@@ -12,7 +12,6 @@ import java.util.List;
 
 public class JsonResponse {
     @SerializedName("images")
-    @Expose
     private ArrayList<ImageInfo> imageList;
 
     public void setImageList(ArrayList<ImageInfo> imageList) {

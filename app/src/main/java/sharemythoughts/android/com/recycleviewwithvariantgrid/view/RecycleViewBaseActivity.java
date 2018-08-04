@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class RecycleViewBaseActivity extends AppCompatActivity implements ImageL
     private Presenter presenter;
     private RecyclerView recyclerView;
     private ImageAdapter adapter;
+    private Toolbar toolbar;
 
 
     @Override
@@ -34,6 +37,14 @@ public class RecycleViewBaseActivity extends AppCompatActivity implements ImageL
     }
 
     private void initRecyclerView() {
+        toolbar=findViewById(R.id.toolbar);
+        ImageView close = findViewById(R.id.close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         recyclerView = findViewById(R.id.recyclerView);
         final GridLayoutManager layoutManager = new CustomGridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -65,12 +76,12 @@ public class RecycleViewBaseActivity extends AppCompatActivity implements ImageL
                 if (layoutManager.findFirstVisibleItemPosition() == 0) {
                     View view = layoutManager.findViewByPosition(0);
                     view.setTranslationY(-view.getTop() / 2);
+                    toolbar.setTranslationY(view.getTop());
                 }
             }
         });
 
     }
-
 
     @Override
     protected void onDestroy() {

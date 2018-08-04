@@ -3,10 +3,13 @@ package sharemythoughts.android.com.recycleviewwithvariantgrid.presenter;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import sharemythoughts.android.com.recycleviewwithvariantgrid.model.AdapterModel;
 import sharemythoughts.android.com.recycleviewwithvariantgrid.model.DataModel;
@@ -26,9 +29,38 @@ public class Presenter implements ImageLoadingContract.Presenter {
     private void initImageLoader() {
         subscription = ImageApiClient.getInstance()
                 .getImageList()
+                .concatMap(new Func1<JsonResponse, Observable<List<ImageInfo>>>() {
+                    @Override
+                    public Observable<List<ImageInfo>> call(JsonResponse jsonResponse) {
+                        Observable<List<ImageInfo>> list = Observable.from(jsonResponse.getImageList()).toList();
+                        return list;
+                    }
+                })
+                .map(new Func1<List<ImageInfo>, List<AdapterModel>>() {
+                    @Override
+                    public List<AdapterModel> call(List<ImageInfo> imageInfos) {
+                        List<AdapterModel> adapterModels = new ArrayList<>();
+                        for (int i = 0; i < imageInfos.size(); i++) {
+                            ImageInfo imageInfo = imageInfos.get(i);
+                            if (imageInfo.getImgUrl().endsWith(".gif")) {
+                                HeaderModel headerModel = new HeaderModel();
+                                headerModel.setData(imageInfo);
+                                adapterModels.add(0, headerModel);
+                            } else {
+                                DataModel dataModel = new DataModel();
+                                dataModel.setId(imageInfo.getId());
+                                dataModel.setImgName(imageInfo.getImgName());
+                                dataModel.setImgUrl(imageInfo.getImgUrl());
+                                adapterModels.add(dataModel);
+
+                            }
+                        }
+                        return adapterModels;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<JsonResponse>() {
+                .subscribe(new Observer<List<AdapterModel>>() {
                     @Override
                     public void onCompleted() {
 
@@ -36,34 +68,12 @@ public class Presenter implements ImageLoadingContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        viewListener.onError(e.getMessage());
 
                     }
 
                     @Override
-                    public void onNext(JsonResponse response) {
-                        Log.d("onNext ","");
-                        if (response != null && !response.getImageList().isEmpty()) {
-
-                            ArrayList<AdapterModel> adapterModels = new ArrayList<>();
-                            for (int i = 0; i < response.getImageList().size(); i++) {
-                                ImageInfo imageInfo = response.getImageList().get(i);
-                                if (imageInfo.getImgUrl().endsWith(".gif")) {
-                                    HeaderModel headerModel = new HeaderModel();
-                                    headerModel.setData(imageInfo);
-                                    adapterModels.add(0,headerModel);
-                                } else {
-                                    DataModel dataModel = new DataModel();
-                                    dataModel.setId(imageInfo.getId());
-                                    dataModel.setImgName(imageInfo.getImgName());
-                                    dataModel.setImgUrl(imageInfo.getImgUrl());
-                                    adapterModels.add(dataModel);
-
-                                }
-                            }
-                            viewListener.onLoadImages(adapterModels);
-                        }
+                    public void onNext(List<AdapterModel> adapterModels) {
+                        viewListener.onLoadImages((ArrayList<AdapterModel>) adapterModels);
                     }
                 });
     }

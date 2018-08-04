@@ -11,13 +11,10 @@ import java.io.Serializable;
 
 public class ImageInfo  {
     @SerializedName("url")
-    @Expose
     private String imgUrl = "";
     @SerializedName("name")
-    @Expose
     private String imgName = "";
     @SerializedName("id")
-    @Expose
     private int id;
 
     public void setImgName(String imgName) {

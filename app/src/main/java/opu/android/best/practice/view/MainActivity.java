@@ -19,7 +19,7 @@ import opu.android.best.practice.presenter.Presenter;
 import opu.android.best.practice.utils.CustomGridLayoutManager;
 
 
-public class RecycleViewBaseActivity extends AppCompatActivity implements ImageLoadingContract.View {
+public class MainActivity extends AppCompatActivity implements ImageLoadingContract.View {
 
     private Presenter presenter;
     private RecyclerView recyclerView;

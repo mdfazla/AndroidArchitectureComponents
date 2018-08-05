@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,7 +16,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 
@@ -37,7 +40,8 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
     private ImageInfo imageInfo;
     private int realWidth, realHeight;
     private ImageView imageView;
-    private int translateYto = 90;
+    private int translateYto = 0;
+    private FrameLayout settings_holder;
 
 
     public static DialogFragment showDialog(ImageInfo imageInfo) {
@@ -81,7 +85,10 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
         ImageView cross_dialog = (ImageView) root.findViewById(R.id.cross_dialog);
         cross_dialog.setOnClickListener(this);
         imageView = root.findViewById(R.id.image);
-        Constant.setImage(getContext(), imageInfo.getImgUrl(), imageView);
+        settings_holder = root.findViewById(R.id.settings_holder);
+        // Constant.setImage(getContext(), imageInfo.getImgUrl(), imageView);
+        setImageViewInProperPosition();
+        loadProperImage(imageView, imageInfo.getImgUrl());
         ImageView save_img = (ImageView) root.findViewById(R.id.save);
         save_img.setOnClickListener(this);
 
@@ -89,10 +96,28 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
         float translateTo = realHeight / 2 - realWidth / 2;
 
         //float translateTo = 50;
-        transitionAnim(imageView, translateYto);
+        // transitionAnim(imageView, translateYto);
 
         backPressListener();
 
+    }
+
+    private void setImageViewInProperPosition() {
+        settings_holder.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                    @Override
+                    public void onGlobalLayout() {
+                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageView.getLayoutParams();
+                        translateYto=settings_holder.getHeight();
+                        params.bottomMargin = translateYto;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            settings_holder.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            settings_holder.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
+                    }
+                });
     }
 
     private void backPressListener() {
@@ -100,7 +125,8 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
-                    dismissDialogWithAnim();
+                    // dismissDialogWithAnim();
+                    dismiss();
                     return true;
                 } else
                     return false;
@@ -128,7 +154,6 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
                 if (scaleX < 1) {
                     imgWidth = (int) (bitmapWidth * scaleX);
                 }
-                float ratio = (translateYto / 2) / (float) realHeight;
 
                 if (scaleY < 1) {
                     imgHeight = (int) (bitmapHeight * scaleY);
@@ -139,7 +164,7 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
                 imageView.setImageBitmap(bitmap);
             }
         };
-        Glide.with(getActivity()).load(url).asBitmap().format(DecodeFormat.PREFER_ARGB_8888).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(target);
+        Glide.with(getActivity()).load(url).asBitmap().format(DecodeFormat.PREFER_RGB_565).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(target);
     }
 
     private void dismissDialogWithAnim() {
@@ -153,7 +178,7 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
     }
 
     private void transitionAnim(View view, float transitionTo) {
-        view.animate().translationY(transitionTo);
+        view.animate().translationY(view.getTop());
     }
 
     private void getBundleData() {
@@ -167,7 +192,8 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cross_dialog:
-                dismissDialogWithAnim();
+                //dismissDialogWithAnim();
+                dismiss();
 
                 break;
 

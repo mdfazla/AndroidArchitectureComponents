@@ -10,7 +10,7 @@
         android:roundIcon="@drawable/beautiul_bangladesh_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity">
+        <activity android:name="opu.android.best.practice.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -57,6 +57,11 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case AdapterModel.ITEM:
                 View itemView = LayoutInflater.from(activity).inflate(R.layout.single_item, parent, false);
                 return new DataViewHolder(itemView);
+
+            case AdapterModel.TITLE:
+                View titleView = LayoutInflater.from(activity).inflate(R.layout.title_layout, parent, false);
+                return new TitleViewHolder(titleView);
+
         }
         return null;
     }
@@ -74,6 +79,10 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case AdapterModel.ITEM:
                 DataViewHolder dataViewHolder = (DataViewHolder) holder;
                 dataViewHolder.loadData((DataModel) list.get(position));
+                break;
+
+            case AdapterModel.TITLE:
+
                 break;
         }
 
@@ -103,6 +112,16 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void loadData(HeaderModel model) {
             Constant.loadGif(imageView.getContext(), model.getData().getImgUrl(), imageView);
         }
+    }
+
+    private class TitleViewHolder extends RecyclerView.ViewHolder {
+
+
+        public TitleViewHolder(View view) {
+            super(view);
+
+        }
+
     }
 
     private class DataViewHolder extends RecyclerView.ViewHolder {

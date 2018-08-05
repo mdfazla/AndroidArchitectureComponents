@@ -3,6 +3,7 @@ package opu.android.best.practice.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import opu.android.best.practice.model.TitleModel;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -44,6 +45,7 @@ public class Presenter implements ImageLoadingContract.Presenter {
                                 HeaderModel headerModel = new HeaderModel();
                                 headerModel.setData(imageInfo);
                                 adapterModels.add(0, headerModel);
+                                adapterModels.add(1, new TitleModel());
                             } else {
                                 DataModel dataModel = new DataModel();
                                 dataModel.setId(imageInfo.getId());

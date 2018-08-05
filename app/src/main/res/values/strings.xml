@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AndroidBestPractice</string>
     <string name="beautiful_bangladesh">Beautiful Bangladesh</string>
+    <string name="album">Album</string>
 </resources>

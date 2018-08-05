@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
     }
 
     private void initRecyclerView() {
-        toolbar=findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         ImageView close = findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
             public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {
                     case AdapterModel.HEADER:
+                    case AdapterModel.TITLE:
                         return 2;
                     case AdapterModel.ITEM:
                         return 1;

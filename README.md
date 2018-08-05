@@ -11,5 +11,6 @@ Purpose of this app is to use the latest technologies such as:
    
     Unit Testing
     
-    
-    ![img](https://raw.githubusercontent.com/mdfazla/BeautifulBangladesh/master/bristi.jpg) 
+    <br>
+    <img height="608" src="https://raw.githubusercontent.com/mdfazla/BeautifulBangladesh/master/bristi.jpg)" /> 
+    <br>

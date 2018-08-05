@@ -1,7 +1,7 @@
 package opu.android.best.practice.utils;
 
+import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
 
@@ -16,11 +16,10 @@ public class Constant {
     public static final String IMG_BASE_URL = "https://raw.githubusercontent.com/mdfazla/";
 
 
-
-    public static int[] calculateDeviceResolution(AppCompatActivity activity) {
+    public static int[] calculateDeviceResolution(Activity activity) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int[] res=new int[2];
+        int[] res = new int[2];
         res[0] = displayMetrics.heightPixels;
         res[1] = displayMetrics.widthPixels;
 

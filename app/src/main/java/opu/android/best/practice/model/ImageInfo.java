@@ -2,11 +2,13 @@ package opu.android.best.practice.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Md.Fazla Rabbi OPu on 8/1/2018.
  */
 
-public class ImageInfo  {
+public class ImageInfo implements Serializable {
     @SerializedName("url")
     private String imgUrl = "";
     @SerializedName("name")

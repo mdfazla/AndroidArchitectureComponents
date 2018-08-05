@@ -110,7 +110,10 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void loadData(HeaderModel model) {
-            Constant.loadGif(imageView.getContext(), model.getData().getImgUrl(), imageView);
+            if (model.getData().getImgUrl().endsWith(".gif"))
+                Constant.loadGif(imageView.getContext(), model.getData().getImgUrl(), imageView);
+            else
+                Constant.setImage(imageView.getContext(), model.getData().getImgUrl(), imageView);
         }
     }
 
@@ -157,8 +160,14 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         }
 
-        public void loadData(DataModel model) {
+        public void loadData(final DataModel model) {
             Constant.setImage(imageView.getContext(), model.getImgUrl(), imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FullImageFragment.showDialog(model).show(activity.getSupportFragmentManager(), FullImageFragment.class.getName());
+                }
+            });
         }
     }
 }

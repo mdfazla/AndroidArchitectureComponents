@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:textSize="20dp"
                 android:text="@string/beautiful_bangladesh"
                 android:textColor="@android:color/white" />
         </FrameLayout>

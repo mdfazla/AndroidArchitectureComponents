@@ -41,7 +41,7 @@ public class Presenter implements ImageLoadingContract.Presenter {
                         List<AdapterModel> adapterModels = new ArrayList<>();
                         for (int i = 0; i < imageInfos.size(); i++) {
                             ImageInfo imageInfo = imageInfos.get(i);
-                            if (imageInfo.getImgUrl().endsWith(".gif")) {
+                            if (imageInfo.getImgName().equals("Header")) {
                                 HeaderModel headerModel = new HeaderModel();
                                 headerModel.setData(imageInfo);
                                 adapterModels.add(0, headerModel);

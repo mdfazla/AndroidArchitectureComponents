@@ -1,4 +1,4 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid.view;
+package opu.android.best.practice.view;
 
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -12,11 +12,11 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import sharemythoughts.android.com.recycleviewwithvariantgrid.R;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.AdapterModel;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.DataModel;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.HeaderModel;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.utils.Constant;
+import opu.android.best.practice.R;
+import opu.android.best.practice.model.AdapterModel;
+import opu.android.best.practice.model.DataModel;
+import opu.android.best.practice.model.HeaderModel;
+import opu.android.best.practice.utils.Constant;
 
 public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<AdapterModel> list;

@@ -1,4 +1,4 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid.view;
+package opu.android.best.practice.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,11 +12,11 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import sharemythoughts.android.com.recycleviewwithvariantgrid.R;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.AdapterModel;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.presenter.ImageLoadingContract;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.presenter.Presenter;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.utils.CustomGridLayoutManager;
+import opu.android.best.practice.R;
+import opu.android.best.practice.model.AdapterModel;
+import opu.android.best.practice.presenter.ImageLoadingContract;
+import opu.android.best.practice.presenter.Presenter;
+import opu.android.best.practice.utils.CustomGridLayoutManager;
 
 
 public class RecycleViewBaseActivity extends AppCompatActivity implements ImageLoadingContract.View {

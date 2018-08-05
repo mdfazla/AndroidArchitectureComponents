@@ -1,4 +1,4 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid.model;
+package opu.android.best.practice.model;
 
 public class HeaderModel implements AdapterModel {
 

@@ -1,4 +1,4 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid.utils;
+package opu.android.best.practice.utils;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -8,8 +8,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.ImageApi;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.JsonResponse;
+import opu.android.best.practice.ImageApi;
+import opu.android.best.practice.model.JsonResponse;
 
 /**
  * Created by Md.Fazla Rabbi OPu on 8/1/2018.

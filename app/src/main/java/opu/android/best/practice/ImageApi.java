@@ -1,8 +1,8 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid;
+package opu.android.best.practice;
 
 import retrofit2.http.GET;
 import rx.Observable;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.JsonResponse;
+import opu.android.best.practice.model.JsonResponse;
 
 /**
  * Created by Md.Fazla Rabbi OPu on 8/1/2018.

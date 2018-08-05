@@ -1,4 +1,4 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid.utils;
+package opu.android.best.practice.utils;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;

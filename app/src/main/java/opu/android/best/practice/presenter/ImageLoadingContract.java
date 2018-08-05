@@ -1,9 +1,8 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid.presenter;
+package opu.android.best.practice.presenter;
 
 import java.util.ArrayList;
 
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.AdapterModel;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.ImageInfo;
+import opu.android.best.practice.model.AdapterModel;
 
 public interface ImageLoadingContract {
     public interface View {

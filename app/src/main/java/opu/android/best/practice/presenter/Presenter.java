@@ -1,6 +1,4 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid.presenter;
-
-import android.util.Log;
+package opu.android.best.practice.presenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +9,12 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.AdapterModel;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.DataModel;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.HeaderModel;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.ImageInfo;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.model.JsonResponse;
-import sharemythoughts.android.com.recycleviewwithvariantgrid.utils.ImageApiClient;
+import opu.android.best.practice.model.AdapterModel;
+import opu.android.best.practice.model.DataModel;
+import opu.android.best.practice.model.HeaderModel;
+import opu.android.best.practice.model.ImageInfo;
+import opu.android.best.practice.model.JsonResponse;
+import opu.android.best.practice.utils.ImageApiClient;
 
 public class Presenter implements ImageLoadingContract.Presenter {
     private ImageLoadingContract.View viewListener;

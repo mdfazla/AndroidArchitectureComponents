@@ -1,9 +1,6 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid.model;
+package opu.android.best.practice.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
 
 /**
  * Created by Md.Fazla Rabbi OPu on 8/1/2018.

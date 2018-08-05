@@ -1,4 +1,4 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid;
+package opu.android.best.practice;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

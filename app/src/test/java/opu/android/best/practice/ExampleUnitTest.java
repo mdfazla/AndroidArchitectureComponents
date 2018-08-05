@@ -1,4 +1,4 @@
-package sharemythoughts.android.com.recycleviewwithvariantgrid;
+package opu.android.best.practice;
 
 import org.junit.Test;
 

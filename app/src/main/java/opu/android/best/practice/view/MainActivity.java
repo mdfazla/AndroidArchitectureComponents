@@ -8,8 +8,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 
@@ -22,6 +23,7 @@ import opu.android.best.practice.model.HeaderModel;
 import opu.android.best.practice.model.ImageInfo;
 import opu.android.best.practice.presenter.ImageLoadingContract;
 import opu.android.best.practice.presenter.Presenter;
+import opu.android.best.practice.utils.Constant;
 import opu.android.best.practice.utils.CustomGridLayoutManager;
 
 
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constant.hideStatusBar(getWindow());
+        //getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_recycle_view_base);
         initRecyclerView();
 

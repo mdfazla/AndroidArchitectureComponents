@@ -81,8 +81,8 @@ public class FullImageFragment extends DialogFragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.full_image_fragment, container, false);
-
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        Constant.hideStatusBar(getDialog().getWindow());
+        //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         getDialog().getWindow().setGravity(Gravity.CENTER);
         int[] resolution = Constant.calculateDeviceResolution(getActivity());

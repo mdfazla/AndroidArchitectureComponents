@@ -1,10 +1,12 @@
 package opu.android.best.practice.view;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 
@@ -89,8 +92,9 @@ public class SlideShowFragment extends DialogFragment implements TimeChangeListe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.slide_show_view, container, false);
-
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        Constant.hideStatusBar(getDialog().getWindow());
+        /*getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         getDialog().getWindow().setGravity(Gravity.CENTER);
         int[] resolution = Constant.calculateDeviceResolution(activity);

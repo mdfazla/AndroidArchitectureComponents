@@ -2,4 +2,8 @@
     <string name="app_name">AndroidBestPractice</string>
     <string name="beautiful_bangladesh">Beautiful Bangladesh</string>
     <string name="album">Album</string>
+    <string name="download">Download</string>
+    <string name="download_msg">This will save into your storage.\nWant to download?</string>
+    <string name="save_sucs">Saved successfully.</string>
+    <string name="already_save">Already saved.</string>
 </resources>

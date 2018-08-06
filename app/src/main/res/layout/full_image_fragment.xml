@@ -7,8 +7,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/settings_holder">
+        android:layout_below="@+id/settings_holder"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/image"
@@ -46,5 +46,17 @@
             android:src="@android:drawable/ic_menu_save"
             android:tag="Menu" />
 
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center" />
     </FrameLayout>
 </RelativeLayout>

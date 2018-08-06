@@ -17,8 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black_transparent"
+        android:contentInsetLeft="0dp"
+        android:contentInsetStart="0dp"
         app:contentInsetLeft="0dp"
-        app:contentInsetRight="0dp">
+        app:contentInsetStart="0dp">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -29,9 +31,18 @@
                 android:id="@+id/close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:padding="10dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:tint="@android:color/transparent" />
+
+            <ImageView
+                android:id="@+id/slide_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right|center"
                 android:padding="10dp"
-                android:src="@android:drawable/ic_delete"
+                android:src="@android:drawable/ic_menu_slideshow"
                 android:tint="@android:color/transparent" />
 
             <TextView
@@ -39,9 +50,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textSize="20dp"
                 android:text="@string/beautiful_bangladesh"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
         </FrameLayout>
 
     </android.support.v7.widget.Toolbar>

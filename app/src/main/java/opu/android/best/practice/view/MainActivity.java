@@ -1,11 +1,14 @@
 package opu.android.best.practice.view;
 
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,6 +17,9 @@ import java.util.ArrayList;
 
 import opu.android.best.practice.R;
 import opu.android.best.practice.model.AdapterModel;
+import opu.android.best.practice.model.DataModel;
+import opu.android.best.practice.model.HeaderModel;
+import opu.android.best.practice.model.ImageInfo;
 import opu.android.best.practice.presenter.ImageLoadingContract;
 import opu.android.best.practice.presenter.Presenter;
 import opu.android.best.practice.utils.CustomGridLayoutManager;
@@ -25,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
     private RecyclerView recyclerView;
     private ImageAdapter adapter;
     private Toolbar toolbar;
+    private ArrayList<AdapterModel> adapterModels;
 
 
     @Override
@@ -43,6 +50,14 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        ImageView slideShow = findViewById(R.id.slide_show);
+        slideShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getImageInfo().size() > 0)
+                    SlideShowFragment.showDialog(getImageInfo(), MainActivity.this).show(getSupportFragmentManager(), SlideShowFragment.class.getName());
             }
         });
         recyclerView = findViewById(R.id.recyclerView);
@@ -100,11 +115,35 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
 
     @Override
     public void onLoadImages(ArrayList<AdapterModel> images) {
+        adapterModels = images;
         adapter.addItems(images);
+    }
+
+    private ArrayList<ImageInfo> getImageInfo() {
+        ArrayList<ImageInfo> list = new ArrayList<>();
+        if (adapterModels != null) {
+            for (AdapterModel model : adapterModels) {
+                if (model.getType() == AdapterModel.ITEM || model.getType() == AdapterModel.HEADER) {
+                    if (model.getType() == AdapterModel.HEADER) {
+                        list.add(((HeaderModel) model).getData());
+                    } else
+                        list.add((DataModel) model);
+                }
+            }
+        }
+        return list;
     }
 
     @Override
     public void onError(String ex) {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+        }
     }
 }

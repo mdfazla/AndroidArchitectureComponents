@@ -2,6 +2,7 @@ package opu.android.best.practice.view;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -30,7 +31,11 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import java.util.ArrayList;
 
 import opu.android.best.practice.R;
+import opu.android.best.practice.model.AdapterModel;
+import opu.android.best.practice.model.DataModel;
+import opu.android.best.practice.model.HeaderModel;
 import opu.android.best.practice.model.ImageInfo;
+import opu.android.best.practice.model.ImagesViewModel;
 import opu.android.best.practice.utils.Constant;
 import opu.android.best.practice.utils.EfficientTimer;
 import opu.android.best.practice.utils.TimeChangeListener;
@@ -45,11 +50,10 @@ public class SlideShowFragment extends DialogFragment implements TimeChangeListe
     private ImageView imageView;
     private int translateYto = 0;
     private int currentImagePosition = 0;
-    private static AppCompatActivity activity;
+    private ImagesViewModel viewModel;
 
 
     public static DialogFragment showDialog(ArrayList<ImageInfo> imageInfos, AppCompatActivity context) {
-        activity = context;
         Bundle bundle = new Bundle();
         bundle.putSerializable(SlideShowFragment.class.getName(), imageInfos);
         DialogFragment fragment = new SlideShowFragment();
@@ -97,11 +101,10 @@ public class SlideShowFragment extends DialogFragment implements TimeChangeListe
         getDialog().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         getDialog().getWindow().setGravity(Gravity.CENTER);
-        int[] resolution = Constant.calculateDeviceResolution(activity);
+        int[] resolution = Constant.calculateDeviceResolution(getActivity());
         realWidth = resolution[1];
         realHeight = resolution[0];
         getBundleData();
-
         initView(parentView);
         return parentView;
     }
@@ -114,6 +117,12 @@ public class SlideShowFragment extends DialogFragment implements TimeChangeListe
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.setIndex(currentImagePosition);
+        EfficientTimer.removeObserver(this);
+    }
 
     private void loadProperImage(final ImageView imageView, String url) {
         SimpleTarget target = new SimpleTarget<Bitmap>() {
@@ -145,29 +154,54 @@ public class SlideShowFragment extends DialogFragment implements TimeChangeListe
                 imageView.setImageBitmap(bitmap);
             }
         };
-        Glide.with(getActivity()).load(url).asBitmap().format(DecodeFormat.PREFER_RGB_565).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(target);
+        if (getActivity() != null)
+            Glide.with(getActivity()).load(url).asBitmap().format(DecodeFormat.PREFER_RGB_565).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(target);
     }
 
     private void getBundleData() {
         if (getArguments() != null) {
-            imageInfos = (ArrayList<ImageInfo>) getArguments().getSerializable(SlideShowFragment.class.getName());
+            viewModel = ViewModelProviders.of(getActivity()).get(ImagesViewModel.class);
+            if (viewModel.getImageList() == null || viewModel.getImageList().size() == 0)
+                imageInfos = (ArrayList<ImageInfo>) getArguments().getSerializable(SlideShowFragment.class.getName());
+            else {
+                imageInfos = getImageInfo(viewModel.getImageList());
+                currentImagePosition = viewModel.getIndex();
+
+            }
         }
 
+    }
+
+    private ArrayList<ImageInfo> getImageInfo(ArrayList<AdapterModel> adapterModels) {
+        ArrayList<ImageInfo> list = new ArrayList<>();
+        if (adapterModels != null) {
+            for (AdapterModel model : adapterModels) {
+                if (model.getType() == AdapterModel.ITEM || model.getType() == AdapterModel.HEADER) {
+                    if (model.getType() == AdapterModel.HEADER) {
+                        list.add(((HeaderModel) model).getData());
+                    } else
+                        list.add((DataModel) model);
+                }
+            }
+        }
+        return list;
     }
 
 
     @Override
     public void onTick() {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (currentImagePosition >= imageInfos.size()) {
-                    dismiss();
-                } else {
-                    loadProperImage(imageView, imageInfos.get(currentImagePosition).getImgUrl());
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (currentImagePosition >= imageInfos.size()) {
+                        dismiss();
+                    } else {
+                        loadProperImage(imageView, imageInfos.get(currentImagePosition).getImgUrl());
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -178,8 +212,9 @@ public class SlideShowFragment extends DialogFragment implements TimeChangeListe
     @Override
     public void dismiss() {
         super.dismiss();
+        currentImagePosition = 0;
+        viewModel.setIndex(currentImagePosition);
         EfficientTimer.removeObserver(this);
-        activity = null;
     }
 }
 

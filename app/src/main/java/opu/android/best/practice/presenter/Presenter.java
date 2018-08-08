@@ -26,7 +26,7 @@ public class Presenter implements ImageLoadingContract.Presenter {
     }
 
     private void initImageLoader() {
-        subscription = ImageApiClient.getInstance()
+        subscription = ImageApiClient.getInstance(viewListener.getContext())
                 .getImageList()
                 .concatMap(new Func1<JsonResponse, Observable<List<ImageInfo>>>() {
                     @Override

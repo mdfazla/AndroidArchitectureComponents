@@ -1,5 +1,7 @@
 package opu.android.best.practice.view;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 
@@ -21,6 +21,7 @@ import opu.android.best.practice.model.AdapterModel;
 import opu.android.best.practice.model.DataModel;
 import opu.android.best.practice.model.HeaderModel;
 import opu.android.best.practice.model.ImageInfo;
+import opu.android.best.practice.model.ImagesViewModel;
 import opu.android.best.practice.presenter.ImageLoadingContract;
 import opu.android.best.practice.presenter.Presenter;
 import opu.android.best.practice.utils.Constant;
@@ -34,15 +35,16 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
     private ImageAdapter adapter;
     private Toolbar toolbar;
     private ArrayList<AdapterModel> adapterModels;
+    private ImagesViewModel viewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Constant.hideStatusBar(getWindow());
-        //getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_recycle_view_base);
+        viewModel = ViewModelProviders.of(this).get(ImagesViewModel.class);
+
         initRecyclerView();
 
         getImages();
@@ -106,21 +108,33 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
 
     @Override
     protected void onDestroy() {
-
-        presenter.dispose();
-        presenter = null;
+        if (presenter != null) {
+            presenter.dispose();
+            presenter = null;
+        }
+        adapter = null;
+        adapterModels = null;
+        toolbar = null;
+        recyclerView = null;
+        viewModel = null;
         super.onDestroy();
     }
 
     private void getImages() {
-        presenter = new Presenter(this);
-        presenter.loadImages();
+        if (viewModel.getImageList() == null || viewModel.getImageList().size() == 0) {
+            presenter = new Presenter(this);
+            presenter.loadImages();
+        } else {
+            adapterModels = viewModel.getImageList();
+            adapter.addItems(adapterModels);
+        }
 
     }
 
     @Override
     public void onLoadImages(ArrayList<AdapterModel> images) {
         adapterModels = images;
+        viewModel.setImageList(images);
         adapter.addItems(images);
     }
 
@@ -142,6 +156,11 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
     @Override
     public void onError(String ex) {
 
+    }
+
+    @Override
+    public Context getContext() {
+        return MainActivity.this;
     }
 
     @Override

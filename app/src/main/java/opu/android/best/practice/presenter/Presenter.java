@@ -1,9 +1,12 @@
 package opu.android.best.practice.presenter;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import opu.android.best.practice.model.TitleModel;
+import opu.android.best.practice.room.ArchComponentDatabase;
+import opu.android.best.practice.room.entity.ImageEntity;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -31,7 +34,9 @@ public class Presenter implements ImageLoadingContract.Presenter {
                 .concatMap(new Func1<JsonResponse, Observable<List<ImageInfo>>>() {
                     @Override
                     public Observable<List<ImageInfo>> call(JsonResponse jsonResponse) {
+                        saveToRoomDatabase(jsonResponse.getImageList());
                         Observable<List<ImageInfo>> list = Observable.from(jsonResponse.getImageList()).toList();
+
                         return list;
                     }
                 })
@@ -76,6 +81,16 @@ public class Presenter implements ImageLoadingContract.Presenter {
                         viewListener.onLoadImages((ArrayList<AdapterModel>) adapterModels);
                     }
                 });
+    }
+
+    private void saveToRoomDatabase(List<ImageInfo> list) {
+        ArchComponentDatabase database = ArchComponentDatabase.getDatabase(viewListener.getContext());
+        for (int i = 0; i < list.size(); i++) {
+            ImageInfo imageInfo = list.get(i);
+            ImageEntity entity = new ImageEntity(imageInfo.getId(), imageInfo.getImgUrl(), imageInfo.getImgName());
+            database.getImgDAO().insertImage(entity);
+
+        }
     }
 
     @Override

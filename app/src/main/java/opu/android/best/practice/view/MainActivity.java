@@ -3,6 +3,8 @@ package opu.android.best.practice.view;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import android.widget.ImageView;
 
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 import opu.android.best.practice.R;
 import opu.android.best.practice.model.AdapterModel;
@@ -22,10 +26,15 @@ import opu.android.best.practice.model.DataModel;
 import opu.android.best.practice.model.HeaderModel;
 import opu.android.best.practice.model.ImageInfo;
 import opu.android.best.practice.model.ImagesViewModel;
+import opu.android.best.practice.model.TitleModel;
 import opu.android.best.practice.presenter.ImageLoadingContract;
 import opu.android.best.practice.presenter.Presenter;
+import opu.android.best.practice.room.ArchComponentDatabase;
+import opu.android.best.practice.room.entity.ImageEntity;
 import opu.android.best.practice.utils.Constant;
 import opu.android.best.practice.utils.CustomGridLayoutManager;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends AppCompatActivity implements ImageLoadingContract.View {
@@ -121,9 +130,55 @@ public class MainActivity extends AppCompatActivity implements ImageLoadingContr
     }
 
     private void getImages() {
+
         if (viewModel.getImageList() == null || viewModel.getImageList().size() == 0) {
-            presenter = new Presenter(this);
-            presenter.loadImages();
+            if(adapterModels==null)
+                adapterModels=new ArrayList<>();
+            HandlerThread thread = new HandlerThread("databaseQuery");
+            thread.start();
+            Handler handler = new Handler(thread.getLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    ArchComponentDatabase database = ArchComponentDatabase.getDatabase(MainActivity.this);
+                    List<ImageEntity> list = database.getImgDAO().getImages();
+
+                    if (list != null && list.size() > 0) {
+                        for (int i = 0; i < list.size(); i++) {
+                            ImageEntity entity = list.get(i);
+                            ImageInfo imageInfo = new ImageInfo();
+                            imageInfo.setImgName(entity.getName());
+                            imageInfo.setImgUrl(entity.getImgUrl());
+                            imageInfo.setId(entity.getId());
+                            if (imageInfo.getImgName().equals("Header")) {
+                                HeaderModel headerModel = new HeaderModel();
+                                headerModel.setData(imageInfo);
+                                adapterModels.add(0, headerModel);
+                                adapterModels.add(1, new TitleModel());
+                            } else {
+                                DataModel dataModel = new DataModel();
+                                dataModel.setId(imageInfo.getId());
+                                dataModel.setImgName(imageInfo.getImgName());
+                                dataModel.setImgUrl(imageInfo.getImgUrl());
+                                adapterModels.add(dataModel);
+
+                            }
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.addItems(adapterModels);
+                            }
+                        });
+
+                    } else {
+                        presenter = new Presenter(MainActivity.this);
+                        presenter.loadImages();
+                    }
+                }
+            });
+
+
         } else {
             adapterModels = viewModel.getImageList();
             adapter.addItems(adapterModels);

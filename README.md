@@ -15,6 +15,9 @@ Purpose of this app is to use the latest technologies such as:
    A library for composing asynchronous and event-based programs by using observable sequences. For more:
    http://reactivex.io/intro.html
    
+   Room <br />Room provides an abstraction layer over SQLite to allow fluent database access while harnessing the full power of    
+   SQLite.For more :https://developer.android.com/training/data-storage/room/
+   
    Dagger 2<br />
    Dependency injection library for android.
    
